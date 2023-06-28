@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+django-environ = "*"
+mysqlclient = "*"
+nanoid = "*"
+pillow = "*"
+
+[dev-packages]
+pytest = "*"
+pytest-django = "*"
+selenium = "*"
+
+[requires]
+python_version = "3.10"
