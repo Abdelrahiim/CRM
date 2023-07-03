@@ -8,5 +8,6 @@ urlpatterns = [
     path('',include('user_profile.urls')),
     path('dashboard/',include('dashboard.urls')),
     path('leads/',include('leads.urls')),
+    path('clients/',include('client.urls'))
     
 ]

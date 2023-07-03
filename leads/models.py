@@ -28,6 +28,7 @@ class Lead(models.Model):
     name= models.CharField(max_length=50)
     email = models.EmailField()
     description= models.TextField(blank=True,null=True)
+    convert_to_client = models.BooleanField(default=False)
     priority = models.CharField(max_length=10,choices=CHOICES_PRIORITY,default=MEDIUM)
     status = models.CharField(max_length=12,choices=CHOICES_STATUS,default=NEW)
     created_by = models.ForeignKey(User,on_delete=models.CASCADE,related_name='leads')

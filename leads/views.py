@@ -8,13 +8,14 @@ from leads.models import Lead
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.http import HttpResponse
+from client.models import Client
 
 
 class ListAllLeads(LoginRequiredMixin, View):
     template_name = "leads/leads.html"
 
     def get(self, request, *args, **kwargs):
-        leads = Lead.objects.filter(created_by=request.user)
+        leads = Lead.objects.filter(created_by=request.user,convert_to_client = False)
         return render(request, self.template_name, {"leads": leads})
 
 
@@ -68,13 +69,32 @@ class UpdateLead(LoginRequiredMixin, View):
             return redirect("leads_list")
 
 
-
-
-
 class DeleteLead(LoginRequiredMixin, View):
+
     def get(self, request, *args, **kwargs):
         id = kwargs["pk"]
         lead = get_object_or_404(Lead, pk=id,created_by=request.user)
         lead.delete()
         messages.success(request,"The Lead Was Deleted Successfully")
         return redirect("leads_list")
+
+
+class ConvertToClient(LoginRequiredMixin,View):
+
+    def get(self,request,*args, **kwargs):
+
+        pk = kwargs['pk']
+        lead = get_object_or_404(Lead, pk=pk,created_by=request.user)
+        client= Client.objects.create(
+            name=lead.name,email=lead.email,
+            description=lead.description,
+            created_by=request.user
+        )
+        messages.success(request,"Lead Is Converted To Client Succefully")
+        lead.convert_to_client = True
+        lead.save()
+        return redirect("leads_list")
+
+
+
+

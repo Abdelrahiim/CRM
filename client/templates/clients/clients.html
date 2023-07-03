@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Clients
+{% endblock title %}
+
+{% block body %}
+
+{% for client in clients %}
+    {{client.name}}
+{% endfor %}
+
+{% endblock body %}
