@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Leads{% endblock title %}
+
+{% block body %}
+
+<div class="my-6 mx-2 flex flex-col justify-center">
+    <div class="flex justify-between mx-2">
+        <p class="py-4 bg-gray-200 px-2 font-semibold w-full">Name</p>
+        <p class="py-4 bg-gray-200 px-2 font-semibold w-full">Priority</p>
+        <p class="py-4 bg-gray-200 px-2 font-semibold w-full">Status</p>
+        <p class="py-4 bg-gray-200 px-2 font-semibold w-full"></p>
+    </div>
+    
+    {% for lead in leads %}
+    <div class="flex justify-between ">
+        <p class="py-2 px-2 w-full {% cycle 'bg-gray-100' '' %}">{{lead.name}}</p>
+        <p class="py-2 px-2 w-full {% cycle 'bg-gray-100' '' %}">{{lead.get_priority_display}}</p>
+        <p class="py-2 px-2 w-full {% cycle 'bg-gray-100' '' %}">{{lead.get_status_display}}</p>
+        <p class="py-2 px-2 w-full {% cycle 'bg-gray-100' '' %}">
+            <a href="{% url 'single_lead' lead.id %}"
+                class="text-white py-2 px-6 my-5 w-full hover:bg-blue-300  rounded-xl  bg-blue-600"> Inspect</a>
+            <a href="{% url 'leads_edit' lead.id %}"
+                class="text-white py-2 px-6 my-5 w-full hover:bg-teal-300  rounded-xl  bg-teal-600"> Edit</a>
+            <a href="{% url 'leads_delete' lead.id %}"
+                class="text-white py-2 px-6 my-5 w-full hover:bg-red-300  rounded-xl  bg-red-600"> Delete</a>
+        </p>
+    </div>
+    
+    {% empty %}
+        <p>There Is No Leads Available</p>
+    {% endfor %}
+
+</div>
+<a href="{% url 'leads' %}"
+    class="inline-block text-white  py-4 px-6 hover:bg-orange-300  rounded-xl mx-2 bg-orange-600">Create New
+    Lead</a>
+
+
+{% endblock body %}

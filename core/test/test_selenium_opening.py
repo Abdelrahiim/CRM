@@ -4,6 +4,9 @@ import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
+
+
+# ---------------------------------------------------------------
 @pytest.mark.selenium
 def test_open_index_page(live_server, firefox_browser_instance):
 
@@ -18,11 +21,10 @@ def test_open_index_page(live_server, firefox_browser_instance):
     
     
     
-
+# ---------------------------------------------------------------
 @pytest.mark.selenium
 def test_open_about_page(live_server,firefox_browser_instance):
     browser = firefox_browser_instance
     browser.get(f'{live_server.url}/about')
     
     assert browser.title == 'About'
-    

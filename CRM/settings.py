@@ -31,6 +31,9 @@ DEBUG = bool(env('DEBUG'))
 
 ALLOWED_HOSTS = []
 
+LOGIN_REDIRECT_URL = "dashboard"
+LOGIN_URL = 'login'
+LOGOUT_REDIRECT_URL = 'login'
 
 # Application definition
 
@@ -42,8 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # my Installed Apps
-    'leads',
+    'core',
     'user_profile',
+    'dashboard',
+    'leads',
 ]
 
 MIDDLEWARE = [
@@ -80,16 +85,27 @@ WSGI_APPLICATION = 'CRM.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+
+# For Testing And Developing
 DATABASES = {
     'default': {
-        'ENGINE': env('DB_ENGINE'),
-        'NAME': env('DB_NAME'),
-        'USER':env('DB_USER'),
-        'PASSWORD':env('DB_PASSWORD'),
-        'HOST':env('DB_HOST'),
-        'PORT':env('DB_PORT')
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': env('DB_ENGINE'),
+#         'NAME': env('DB_NAME'),
+#         'USER':env('DB_USER'),
+#         'PASSWORD':env('DB_PASSWORD'),
+#         'HOST':env('DB_HOST'),
+#         'PORT':env('DB_PORT')
+#     }
+# }
 
 
 # Password validation

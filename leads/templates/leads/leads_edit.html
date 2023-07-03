@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %} Edit {{pk}}{% endblock title %}
+
+{% block body %}
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit" class="px-4 py-2 bg-teal-400 rounded-lg text-white">
+        submit
+    </button>
+</form>
+
+{% endblock body %}
