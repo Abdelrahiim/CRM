@@ -5,36 +5,39 @@
 {% block body %}
 
 
-<div class = 'py-6 px-6'>
-    <h1 class = 'mb-4 text-xl'>{{lead.name}}</h1>
-    {% if lead.description %}
+<div class='py-6 px-6'>
+        <h1 class='mb-4 text-xl'>{{lead.name}}</h1>
+        {% if lead.description %}
         <p> {{lead.description}} </p>
-    {% endif %}
-
-    <p class = "mb-2 font-semibold">Status</p>
-    <p>{{lead.get_status_display}}</p>
-
-
-    <p class = "mb-2 font-semibold">Priority</p>
-    <p>{{lead.get_priority_display}}</p>
-
-
-    <p class = "mb-2 font-semibold">Created at</p>
-    <p>{{lead.created_at}}</p>
-    <p class = "mb-2 font-semibold">Modified at</p>
-    <p>{{lead.modified_at}}</p> 
-    <p class = "mb-2 font-semibold">Priority</p>
-    <p>{{lead.get_priority_display}}</p>
-        <div class = "m-4" >
-        <a href="{% url 'leads_edit' lead.id %}"
-                class="text-white py-2 px-6 my-5 w-full hover:bg-teal-300  rounded-xl  bg-teal-600"> Edit</a>
-        <a href="{% url 'leads_delete' lead.id %}"
-                class="text-white py-2 px-6 my-5 w-full hover:bg-red-300  rounded-xl  bg-red-600"> Delete</a>
-        {% if not lead.convert_to_client %}
-        <a href="{% url 'convert_lead' lead.id %}" class="text-white py-2 px-5 my-5 w-full hover:bg-amber-300  rounded-xl  bg-amber-600"> Convert To Client</a>
         {% endif %}
+
+        <p class="mb-2 font-semibold">Status</p>
+        <p>{{lead.get_status_display}}</p>
+
+
+        <p class="mb-2 font-semibold">Priority</p>
+        <p>{{lead.get_priority_display}}</p>
+
+
+        <p class="mb-2 font-semibold">Created at</p>
+        <p>{{lead.created_at}}</p>
+        <p class="mb-2 font-semibold">Modified at</p>
+        <p>{{lead.modified_at}}</p>
+        <p class="mb-2 font-semibold">Priority</p>
+        <p>{{lead.get_priority_display}}</p>
+        <div class="m-4">
+                <a href="{% url 'leads_edit' lead.id %}"
+                        class="text-white py-2 px-6 my-5 w-full hover:bg-teal-300  rounded-xl  bg-teal-600"> Edit</a>
+                <a href="{% url 'leads_delete' lead.id %}"
+                        class="text-white py-2 px-6 my-5 w-full hover:bg-red-300  rounded-xl  bg-red-600"> Delete</a>
+                {% if not lead.convert_to_client %}
+                <a href="{% url 'convert_lead' lead.id %}"
+                        class="text-white py-2 px-5 my-5 w-full hover:bg-amber-300  rounded-xl  bg-amber-600"> Convert
+                        To Client</a>
+                {% endif %}
         </div>
-        <a class=" transition-all duration-500 ease-in-out mx-2 hover:text-2xl " href="{% url 'leads_list'  %}">Back To Leads</a>
+        <a class=" transition-all duration-500 ease-in-out mx-2 hover:text-2xl " href="{% url 'leads_list'  %}">Back To
+                Leads</a>
 </div>
 
 {% endblock body %}

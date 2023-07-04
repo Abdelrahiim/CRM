@@ -5,9 +5,57 @@ Clients
 {% endblock title %}
 
 {% block body %}
+{% if clients %}
+<div class="mx-auto my-6">
+    <table class="w-full text-s text-gray-400">
+        <thead class="text-xs  uppercase bg-gray-700 text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    #
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    name
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Email
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Controls
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in clients %}
+            <tr class="border-b bg-gray-800 border-gray-700 {% cycle 'bg-gray-900' 'bg-gray-800' %}">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{ forloop.counter }}
+                </th>
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{client.name}}
+                </th>
+                <td class="px-6 py-4 text-center">
+                    {{client.email}}
+                </td>
+                <td class="px-6 py-4">
+                    <a href="{% url 'single-client' client.id %}"
+                        class="text-white py-2 px-5 my-5 w-full hover:bg-blue-300  rounded-xl  bg-blue-600"> Inspect</a>
+                    <a href="{% url 'remove-client' client.id %}"
+                        class="text-white py-2 px-6 my-5 w-full hover:bg-red-300  rounded-xl  bg-red-600"> Delete</a>
+                    <a href="{% url 'edit-client' client.id %}"
+                        class="text-white py-2 px-6 my-5 w-full hover:bg-teal-300 rounded-xl  bg-teal-600"> Edit</a>
 
-{% for client in clients %}
-    {{client.name}}
-{% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+
+<p class="mx-4 text-2xl">There Is No Clients Available</p>
+{% endif %}
+
+<a href="{% url 'create-client' %}"
+    class="inline-block text-white  py-4 px-6 hover:bg-orange-300  rounded-xl mx-2 bg-orange-600">Create New Client</a>
 
 {% endblock body %}

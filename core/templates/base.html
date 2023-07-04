@@ -14,6 +14,7 @@
             {% if request.user.is_authenticated %}
                 <li><a href="{% url 'dashboard' %}" class="text-white  py-4 px-6 hover:bg-blue-300  rounded-xl mx-2 bg-blue-600">DashBoard</a></li>
                 <li><a href="{% url 'leads_list' %}" class="text-white  py-4 px-6 hover:bg-pink-300  rounded-xl mx-2 bg-pink-600">Leads List</a></li>
+                <li><a href="{% url 'clients' %}" class="text-white  py-4 px-6 hover:bg-purple-300  rounded-xl mx-2 bg-purple-600">Clients List</a></li>
                 <li><a href="{% url 'logout' %}" class="text-white  py-4 px-6 hover:bg-red-300  rounded-xl mx-2 bg-red-600"> Log out</a></li>
             {% else %}
                 <li><a href="{% url 'login' %}" class="text-white hover:bg-teal-400 py-4 px-6 bg-teal-700  rounded-xl mx-2  h"> LogIn </a></li>
@@ -25,7 +26,7 @@
     </nav>
     <main>
         {% if messages %}
-            <div class = "px-6 py-6">
+            <div class = " msg px-6 py-6">
                 {% for message in messages  %}
                     <div class="px-4 py-4 bg-teal-300 rounded-xl">
                         {{message}}
@@ -40,5 +41,13 @@
             CopyWrite (c) 2022
         </div>
     </footer>
+    <script>
+        const msg = document.querySelector('.msg');
+        setInterval(()=>{
+            msg.classList.add('hidden')
+        
+        },3000)
+
+    </script>
 </body>
 </html>
