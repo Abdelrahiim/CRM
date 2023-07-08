@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock title %}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'css\dist\main.css' %}">
+    <link rel="shortcut icon" href="{% static 'imgs/_b6d60d51-22df-46ef-83ad-1b243e3035fa.jpg' %}" type="image/x-icon">
 </head>
 
 <body>
@@ -14,11 +16,11 @@
         <ul class="flex justify-center items-center my-2">
             <li><a href="{% url 'about' %}" class="text-white mx-2" id="About"> About </a></li>
             {% if request.user.is_authenticated %}
-            <li><a href="{% url 'dashboard' %}"
+            <li><a href="{% url 'dashboard:' %}"
                     class="text-white  py-4 px-6 hover:bg-blue-300  rounded-xl mx-2 bg-blue-600">DashBoard</a></li>
-            <li><a href="{% url 'leads_list' %}"
+            <li><a href="{% url 'leads:list' %}"
                     class="text-white  py-4 px-6 hover:bg-pink-300  rounded-xl mx-2 bg-pink-600">Leads </a></li>
-            <li><a href="{% url 'clients' %}"
+            <li><a href="{% url 'client:list' %}"
                     class="text-white  py-4 px-6 hover:bg-purple-300  rounded-xl mx-2 bg-purple-600">Clients </a></li>
             <li><a href="{% url 'my-account' %}"
                     class="text-white  py-4 px-6 hover:bg-emerald-300  rounded-xl mx-2 bg-emerald-600"> My Account</a>
@@ -35,7 +37,7 @@
     </nav>
     <main>
         {% if messages %}
-        <div class=" msg px-6 py-6">
+        <div class="msg px-6 py-6">
             {% for message in messages  %}
             <div class="px-4 py-4 bg-teal-300 rounded-xl">
                 {{message}}
@@ -50,15 +52,8 @@
             CopyWrite (c) 2022
         </div>
     </footer>
-    <script>
-        const msg = document.querySelector('.msg');
-        if (!msg) {}
-        else {
-            setInterval(() => { msg.classList.add('hidden') }, 3000)
-        }
-
-
-    </script>
+    <script src="{% static 'js/main.js' %}" ></script>
+    
 </body>
 
 </html>

@@ -3,46 +3,102 @@
 {% block title %}Leads{% endblock title %}
 
 {% block body %}
+
 {% if leads %}
+<div class="mx-auto my-6">
+    <table class="w-full  text-s  text-gray-200">
+        <thead class="text-xs  uppercase bg-sky-700 text-gray-200">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    #
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Name
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Status
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Priority
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Controls
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lead in leads %}
+            <tr class="border-b border-sky-700 {% cycle 'bg-sky-900' 'bg-sky-800' %}">
+                <th scope="row" class="px-6 py-4 font-medium  whitespace-nowrap text-white">
+                    {{ forloop.counter }}
+                </th>
+                <th scope="row" class="px-6 py-4 font-medium text-center whitespace-nowrap text-white">
+                    {{lead.name}}
+                </th>
+                <td class="px-6 py-4 text-center">
+                    {{lead.get_status_display}}
+                </td>
+                <td class="px-6 py-4 text-center">
+                    {{lead.get_priority_display}}
+                </td>
+                <td class="px-6 py-4 text-center">
+                    <a href="{% url 'leads:details' lead.id %}"
+                        class="text-white py-2 px-5 my-5 w-full hover:bg-blue-300  rounded-xl  bg-blue-600"> Inspect</a>
+                    <a href="{% url 'leads:delete' lead.id %}"
+                        class="text-white py-2 px-6 my-5 w-full hover:bg-red-300  rounded-xl  bg-red-600"> Delete</a>
+                    <a href="{% url 'leads:edit' lead.id %}"
+                        class="text-white py-2 px-6 my-5 w-full hover:bg-teal-300 rounded-xl  bg-teal-600"> Edit</a>
+                <a href="{% url 'leads:convert' lead.id %}" class="text-white py-2 px-5 my-5 w-full hover:bg-amber-300  rounded-xl  bg-amber-600"> Convert To Client</a>
 
-<div class="my-6 mx-2 flex flex-col justify-center">
-    <div class="flex justify-between mx-2">
-        <p class="py-4 bg-gray-200 px-2 font-semibold w-full">Name</p>
-        <p class="py-4 bg-gray-200 px-2 font-semibold w-full">Priority</p>
-        <p class="py-4 bg-gray-200 px-2 font-semibold w-full">Status</p>
-        <p class="py-4 bg-gray-200 px-2 font-semibold w-full"></p>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
+{% else %}
+
+<p class="mx-4 text-2xl">There Is No leads Available</p>
 {% endif %}
-    
-    {% for lead in leads %}
-    <div class="flex justify-between ">
-        <p class="py-2 px-2 w-full {% cycle 'bg-gray-100' '' %}">{{lead.name}}</p>
-        <p class="py-2 px-2 w-full {% cycle 'bg-gray-100' '' %}">{{lead.get_priority_display}}</p>
-        <p class="py-2 px-2 w-full {% cycle 'bg-gray-100' '' %}">{{lead.get_status_display}}</p>
-        <div class="py-2 px-2 w-full {% cycle 'bg-gray-100' '' %} flex flex-col justify-center items-center">
-            <div class="my-2">
-                <a href="{% url 'single_lead' lead.id %}"
-                class="text-white py-2 px-5 my-5 w-full hover:bg-blue-300  rounded-xl  bg-blue-600"> Inspect</a>
 
+<section aria-label="Page navigation example"  >
+    <ul class="flex items-center justify-center  -space-x-px h-10 text-base">
+        {%if leads.has_previous %}
+        <li>
+            <a href="?page={{leads.previous_page_number}}"
+                class="flex items-center justify-center px-4 h-10 ml-0 leading-tight  border  rounded-l-lg   bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">
+                <span class="sr-only">Previous</span>
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M5 1 1 5l4 4" />
+                </svg>
+            </a>
+        </li>
+        {% endif %}
 
-                <a href="{% url 'convert_lead' lead.id %}" class="text-white py-2 px-5 my-5 w-full hover:bg-amber-300  rounded-xl  bg-amber-600"> Convert To Client</a>
+        <li>
+            <a href="?page={{leads.number}}" aria-current="page"
+                class="z-10 flex items-center justify-center px-4 h-10 leading-tight  border  hover:bg-blue-100 hover:text-blue-700 border-sky-700 bg-sky-700 text-white">{{leads.number }}</a>
+        </li>
 
-            </div>
-            <div class="my-2">
-            <a href="{% url 'leads_edit' lead.id %}"
-                class="text-white py-2 px-5 my-5 w-full hover:bg-teal-300  rounded-xl  bg-teal-600"> Edit</a>
-            <a href="{% url 'leads_delete' lead.id %}"
-                class="text-white py-2 px-5 my-5 w-full hover:bg-red-300  rounded-xl  bg-red-600"> Delete</a>
-            </div>
-        </div>
-    </div>
-    
-    {% empty %}
-        <p class="mx-4 text-2xl">There Is No Leads Available</p>
-    {% endfor %}
+        {%if leads.has_next  %}
+        <li>
+            <a href="?page={{leads.next_page_number}}"
+                class="flex items-center justify-center px-4 h-10 leading-tight   border  rounded-r-lg  bg-sky-800 border-sky-700 text-gray-200 hover:bg-sky-700 hover:text-white">
+                <span class="sr-only">Next</span>
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 9 4-4-4-4" />
+                </svg>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</section>
 
-</div>
-<a href="{% url 'leads' %}"
+<a href="{% url 'leads:create' %}"
     class="inline-block text-white  py-4 px-6 hover:bg-orange-300  rounded-xl mx-2 bg-orange-600">Create NewLead</a>
 
 

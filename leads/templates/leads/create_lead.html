@@ -1,21 +1,22 @@
 {% extends 'base.html' %}
 
-{% block title %}Leads{% endblock title %}
+{% block title %}{{title}} Lead{% endblock title %}
 {% block body %}
+<div class="p-6 my-2 ">
+    
+    {% if team.plan.max_leads > team.leads_team.count or title == "Edit" %}
 
-<h1 class = "text-xl">Add Lead</h1>
+    <h1 class="text-3xl p-4">{{title}} Lead</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit" class="px-4 py-2 bg-teal-400 rounded-lg text-white">
+            submit
+        </button>
+    </form>
+    {% else %}
+    <div class="px-6 py-4 bg-red-500 rounded-xl text-white "> You Have Reached Your Limit</div>
 
-{% if team.plan.max_clients > team.leads_team.all|length  %}
-<form action="" method="post">
-
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit" class="px-4 py-2 bg-teal-400 rounded-lg text-white">
-        submit
-    </button>
-</form>
-{% else %}
-    <p> You Have Reached Your Limit</p>
-
-{% endif %}
+    {% endif %}
+</div>
 {% endblock body %}
