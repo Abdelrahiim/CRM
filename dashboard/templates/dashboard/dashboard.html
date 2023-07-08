@@ -3,5 +3,31 @@
 {% block title %}Dashboard{% endblock title %}
 
 {% block body %}
-<h1>dashboard </h1>
+<div class='p-6 '>
+    <div class="flex space-x-4 ">
+        <div class="w-1/2 py-4 px-6 rounded-lg bg-indigo-200">
+            <h1 class="text-xxl"> Clients </h1>
+            {% for client in clients  %}
+            <div class = "my-2">
+            <a class="block transition-all duration-500 ease-in-out  hover:text-2xl"
+                href="{% url 'single-client' client.id %}">{{client.name | title}}</a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="w-1/2 py-4 px-6 rounded-lg bg-indigo-200">
+            <h1 class="text-xxl"> Leads </h1>
+            {% for lead in leads  %}
+            
+            <a class="block duration-500 ease-in-out text-xl hover:text-2xl"
+                href="{% url 'single_lead' lead.id %}">{{lead.name | title}}</a>
+
+            <p>Status : {{lead.get_status_display}}</p>
+            <p>Priority : {{lead.get_priority_display}}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
 {% endblock body %}

@@ -3,6 +3,7 @@
 {% block title %}Create Client{% endblock title %}
 {% block body %}
 
+{% if team.plan.max_client > team.clients_team.all|length  %}
 <form action="" method="post">
     {% csrf_token %}
     {{form.as_p}}
@@ -10,5 +11,9 @@
         submit
     </button>
 </form>
+{% else %}
+    <p> You Have Reached Your Limit</p>
+
+{% endif %}
 
 {% endblock body %}

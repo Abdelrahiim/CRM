@@ -12,21 +12,18 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('team', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Client',
+            name='Team',
             fields=[
                 ('id', models.CharField(default=CRM.nano_id_function.get_nano_id, max_length=12, primary_key=True, serialize=False, unique=True)),
-                ('name', models.CharField(max_length=50)),
-                ('email', models.EmailField(max_length=254)),
-                ('description', models.TextField(blank=True, null=True)),
+                ('name', models.CharField(max_length=100)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('modified_at', models.DateTimeField(auto_now=True)),
-                ('created_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='client', to=settings.AUTH_USER_MODEL)),
-                ('team', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='clients_team', to='team.team')),
+                ('created_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='created_team', to=settings.AUTH_USER_MODEL)),
+                ('members', models.ManyToManyField(related_name='teams', to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

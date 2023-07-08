@@ -2,6 +2,8 @@ from django.db import models
 from CRM.nano_id_function import get_nano_id
 from django.contrib.auth.models import User
 
+from team.models import Team
+
 
 # ---------------------------------------------------------------
 class Lead(models.Model):
@@ -32,6 +34,7 @@ class Lead(models.Model):
     priority = models.CharField(max_length=10,choices=CHOICES_PRIORITY,default=MEDIUM)
     status = models.CharField(max_length=12,choices=CHOICES_STATUS,default=NEW)
     created_by = models.ForeignKey(User,on_delete=models.CASCADE,related_name='leads')
+    team = models.ForeignKey(Team,related_name='leads_team',on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     

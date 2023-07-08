@@ -5,7 +5,7 @@ from client.models import Client
 from client.forms import AddClientForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-
+from team.models import Team
 # Create your views here.
 
 
@@ -30,11 +30,12 @@ class SingleClient(LoginRequiredMixin, View):
 
 # -------------------------------------------------------------
 class CreateNewCLient(LoginRequiredMixin, View):
-    
+    template_name = "clients/create-client.html"
     # ------------------------------
     def get(self, request):
         form = AddClientForm()
-        return render(request, "clients/create-client.html", {"form": form})
+        team = self._get_team(request.user)
+        return render(request, self.template_name, {"form": form,"team":team})
 
     # ------------------------------
     def post(self, request):
@@ -49,16 +50,24 @@ class CreateNewCLient(LoginRequiredMixin, View):
     def _create_client(self, request, form: AddClientForm):
         client = form.save(commit=False)
         client.created_by = request.user
+        client.team = self._get_team(request.user)
         client.save()
         messages.success(request, "Client Created Successfully")
+        
+    # ------------------------------
+    def _get_team(self,user):
+        return Team.objects.filter(created_by= user).first()
+        
+        
 
 
 class UpdateClient(LoginRequiredMixin, View):
+    template_name = "clients/client-edit.html"
     
     # ------------------------------
     def get(self, request, *args, **kwargs):
         form = AddClientForm()
-        return render(request, "clients/client-edit.html", {"form": form})
+        return render(request,self.template_name , {"form": form})
 
     # ------------------------------
     def post(self, request, *args, **kwargs):
