@@ -4,10 +4,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import ListView
 from client.models import Client
-from client.forms import AddClientForm
+from client.forms import ClientFileForm, ClientForm, CommentForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from team.models import Team
+from django.db.models import Q
 from django.core.paginator import Paginator,PageNotAnInteger, EmptyPage
 # Create your views here.
 
@@ -47,7 +48,7 @@ class ClientList(LoginRequiredMixin, View):
 # -------------------------------------------------------------
 class SingleClient(LoginRequiredMixin, View):
     template_name = "clients/single_client.html"
-    
+    form_class = CommentForm
     # ------------------------------
     def get(self, request, *args, **kwargs):
         pk = kwargs["pk"]
@@ -58,9 +59,46 @@ class SingleClient(LoginRequiredMixin, View):
     def get_context_data(self, **kwargs):
         context = {}
         context["client"] = get_object_or_404(Client, created_by=kwargs['user'], pk=kwargs['pk'])
+        context['form'] = self.get_form()
+        context['file_form'] = ClientFileForm()
         return context
     
+    # -------------------------------------------
+    def get_form(self, **kwargs) :
+        if kwargs:
+            data = kwargs["data"]
+            form = self.form_class(data)
+        else:
+            form = self.form_class()
+        return form
+    # -------------------------------------------
+    def post(self, request, *args, **kwargs):
+        """
+        For Adding Comment
+        """
+        
+        pk = kwargs['pk']
+        form = self.get_form(data=request.POST)
+        context = self.get_context_data(user=request.user,pk=pk)
+        if form.is_valid(): 
+            self._create_comment(client=context['client'],form=form)
+            messages.success(request, "The Comment Was Created Successfully")
+            return redirect("client:details",pk=pk)
 
+        raise ValidationError("Error Validate The Form")
+            
+            
+    # -------------------------------------------
+    def _create_comment(self,client,form):
+        comment = form.save(commit=False)
+        comment.created_by = self.request.user
+        comment.team = self._get_team(self.request.user)
+        comment.client = client
+        comment.save()
+        
+    # ------------------------------
+    def _get_team(self, user):
+        return Team.objects.filter(Q(created_by=user)|Q(members__id = user.id)).first()
 
 # -------------------------------------------------------------
 class CreateNewClient(LoginRequiredMixin, View):
@@ -82,7 +120,7 @@ class CreateNewClient(LoginRequiredMixin, View):
         raise ValidationError("Error Validate The Form")
 
     # ------------------------------
-    def _create_client(self,user, form: AddClientForm):
+    def _create_client(self,user, form: ClientForm):
         client = form.save(commit=False)
         client.created_by = user
         client.team = self._get_team(user)
@@ -94,12 +132,12 @@ class CreateNewClient(LoginRequiredMixin, View):
         return Team.objects.filter(created_by= user).first()
     
     # -------------------------------------------
-    def get_form(self,**kwargs) -> AddClientForm:
+    def get_form(self,**kwargs) -> ClientForm:
         if kwargs:
             data= kwargs['data']
-            form = AddClientForm(data)
+            form = ClientForm(data)
         else:
-            form = AddClientForm()
+            form = ClientForm()
         return form
             
     def get_context_data(self,user):
@@ -124,8 +162,8 @@ class UpdateClient(LoginRequiredMixin, View):
     # ------------------------------
     def get_context_data(self, **kwargs):
         context = {}
-        lead = self.get_queryset(pk = kwargs['pk'])
-        context["form"] = self.get_form(instance = lead)
+        client = self.get_queryset(pk = kwargs['pk'])
+        context["form"] = self.get_form(instance = client)
         context['title'] = 'Edit'
         return context
     
@@ -146,11 +184,11 @@ class UpdateClient(LoginRequiredMixin, View):
             return redirect("client:list")
     
     # ------------------------------    
-    def get_form(self,**kwargs) -> AddClientForm:
+    def get_form(self,**kwargs) -> ClientForm:
         if kwargs.get('data'):
-            form = AddClientForm(kwargs.get('data'),instance=kwargs['instance'])
+            form = ClientForm(kwargs.get('data'),instance=kwargs['instance'])
         else:
-            form = AddClientForm(instance=kwargs.get('instance'))
+            form = ClientForm(instance=kwargs.get('instance'))
         return form
 
 
@@ -169,3 +207,32 @@ class DeleteClient(LoginRequiredMixin, View):
     def _delete_client(self, user, pk):
         client = get_object_or_404(Client, created_by=user, pk=pk)
         client.delete()
+
+
+
+# ---------------------------------------------------------------
+class UploadFileView(LoginRequiredMixin,View):
+    
+    # ------------------------------
+    def post(self,request,*args, **kwargs):
+        pk = kwargs.get('pk')
+        form = ClientFileForm(request.POST,request.FILES)
+        
+        if form.is_valid():
+            self.form_handling(pk,form,request.user)
+            messages.success(request,"File Uploaded Successfully")
+            return redirect("client:details",pk=pk)
+
+        raise ValidationError("Error Validate The Form")
+    
+    # -----------------------------------------------------------
+    def form_handling(self,pk,form:ClientFileForm,user):
+        file = form.save(commit=False)
+        file.team = self._get_team(user)
+        file.client_id = pk
+        file.created_by = user
+        file.save()
+        
+    # ------------------------------
+    def _get_team(self, user):
+        return Team.objects.filter(Q(created_by=user)|Q(members__id = user.id)).first()

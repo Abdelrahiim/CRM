@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+
+aside .sidebar a.active{
+    width: 100%;
+    color: rgb(56, 189, 248);
+    background-color: rgba(132, 139, 200, 0.18);
+    margin-left: 0;
+}
+
+aside .sidebar a:hover span{
+    margin-left: 0.6rem;
+}
+
+aside .sidebar a.active::before{
+    content: '';
+    width: 6px;
+    height: 18px;
+    background-color: var(--color-primary);
+}

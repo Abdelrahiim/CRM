@@ -23,7 +23,7 @@ class EditTeam(View):
     def get_context_data(self,**kwargs):
         context = dict()
         context['team'] = self.get_queryset(kwargs['pk'])
-        context['form'] = TeamEditForm()
+        context['form'] = TeamEditForm(instance=context['team'])
         return context
     
     # ------------------------------

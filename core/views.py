@@ -10,5 +10,5 @@ class IndexView(LoginRequiredMixin, generic.TemplateView):
 
 
 # ---------------------------------------------------------------
-class AboutView(LoginRequiredMixin, generic.TemplateView):
+class AboutView(generic.TemplateView):
     template_name = "about.html"

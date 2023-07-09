@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from CRM.nano_id_function import get_nano_id
+from CRM.custom_config import get_nano_id
 
 # Create your models here.
 

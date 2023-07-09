@@ -1,43 +1,113 @@
-{% extends 'base.html' %}
-
-{% block title %}{{lead.name}}{% endblock title %}
-
+{% extends 'base.html' %} {% load static %} 
+{% block title %}{{lead.name}}{%endblock title %} 
 {% block body %}
 
+<div class="py-6 px-6">
+    <h1 class="mb-4 text-xl">{{lead.name}}</h1>
+    {% if lead.description %}
+    <p>{{lead.description}}</p>
+    {% endif %}
 
-<div class='py-6 px-6'>
-        <h1 class='mb-4 text-xl'>{{lead.name}}</h1>
-        {% if lead.description %}
-        <p> {{lead.description}} </p>
+    <p class="mb-2 font-semibold">Status</p>
+    <p>{{lead.get_status_display}}</p>
+
+    <p class="mb-2 font-semibold">Priority</p>
+    <p>{{lead.get_priority_display}}</p>
+
+    <p class="mb-2 font-semibold">Created at</p>
+    <p>{{lead.created_at}}</p>
+    <p class="mb-2 font-semibold">Modified at</p>
+    <p>{{lead.modified_at}}</p>
+    <p class="mb-2 font-semibold">Team</p>
+    <p>{{lead.team}}</p>
+    {{lead.id}}
+    <div class="m-4">
+        <a
+            href="{% url 'leads:edit' lead.id %}"
+            class="text-white py-2 px-6 my-5 w-full hover:bg-teal-300 rounded-xl bg-teal-600"
+        >
+            Edit</a
+        >
+        <a
+            href="{% url 'leads:delete' lead.id %}"
+            class="text-white py-2 px-6 my-5 w-full hover:bg-red-300 rounded-xl bg-red-600"
+        >
+            Delete</a
+        >
+        {% if not lead.convert_to_client %}
+        <a
+            href="{% url 'leads:convert' lead.id %}"
+            class="text-white py-2 px-5 my-5 w-full hover:bg-amber-300 rounded-xl bg-amber-600"
+        >
+            Convert To Client</a
+        >
         {% endif %}
-
-        <p class="mb-2 font-semibold">Status</p>
-        <p>{{lead.get_status_display}}</p>
-
-
-        <p class="mb-2 font-semibold">Priority</p>
-        <p>{{lead.get_priority_display}}</p>
-
-
-        <p class="mb-2 font-semibold">Created at</p>
-        <p>{{lead.created_at}}</p>
-        <p class="mb-2 font-semibold">Modified at</p>
-        <p>{{lead.modified_at}}</p>
-        <p class="mb-2 font-semibold">Team</p>
-        <p>{{lead.team}}</p>
-        <div class="m-4">
-                <a href="{% url 'leads:edit' lead.id %}"
-                        class="text-white py-2 px-6 my-5 w-full hover:bg-teal-300  rounded-xl  bg-teal-600"> Edit</a>
-                <a href="{% url 'leads:delete' lead.id %}"
-                        class="text-white py-2 px-6 my-5 w-full hover:bg-red-300  rounded-xl  bg-red-600"> Delete</a>
-                {% if not lead.convert_to_client %}
-                <a href="{% url 'leads:convert' lead.id %}"
-                        class="text-white py-2 px-5 my-5 w-full hover:bg-amber-300  rounded-xl  bg-amber-600"> Convert
-                        To Client</a>
-                {% endif %}
+    </div>
+    <a
+        class="transition-all duration-500 ease-in-out mx-2 hover:text-2xl"
+        href="{% url 'leads:list'  %}"
+        >Back To Leads</a
+    >
+    <div class="space-y-4 flex flex-col gap-6">
+        {% for comment in lead.comments_lead.all %}
+        <div class="bg-gray-100 p-6 rounded-xl">
+            <h2 class="mb-2">
+                <strong>{{comment.created_by}}</strong> @ {{comment.created_at}}
+            </h2>
+            <p>{{comment.content}}</p>
+            <p></p>
         </div>
-        <a class=" transition-all duration-500 ease-in-out mx-2 hover:text-2xl " href="{% url 'leads:list'  %}">Back To
-                Leads</a>
+
+        {% endfor %}
+    </div>
+
+    <!--Add Comment Form-->
+    <div class="flex flex-col gap-4 justify-center items-center before:content-[''] before:w-full before:h-1  before:bg-stone-500 border-dashed border-4 border-gray-200">
+        <h1 class="text-2xl">Add Comment</h1>
+
+        <form action="" method="post" class = "flex flex-col justify-center ">
+            {% csrf_token %} 
+            <div class = "flex justify-center items-center gap-4">
+            {{form}}
+            </div>
+            <button
+                type="submit"
+                class="px-4 py-2 my-2 bg-cyan-400 hover:bg-cyan-600 rounded-lg text-white"
+            >
+                submit
+            </button>
+        </form>
+    </div>
+
+    <!-- Files -->
+    <div class="space-y-4 flex flex-col gap-6">
+        {% for file in lead.lead_files.all %}
+        <div class="bg-gray-100 p-6 rounded-xl">
+            <h2 class="mb-2">
+                <strong>{{file.created_by}}</strong> @ {{file.created_at}}
+            </h2>
+            <a href ="{{ file.file.url }}" class = "px-6 py-3 rounded-lg mt-4 inline-block  bg-blue-400 text-white hover:bg-blue-600"> Download </a>            
+        </div>
+
+        {% endfor %}
+    </div>
+
+    <!--Upload File Form-->
+    <div class="flex flex-col gap-4 justify-center items-center my-8 before:content-[''] border-dashed border-4 border-gray-200 before:w-full before:h-1  before:bg-stone-500">
+        <h1 class="text-2xl">Upload File</h1>
+        <form action="{% url "leads:add-file" lead.id %}" method="post" class = "flex flex-col justify-center" enctype="multipart/form-data" >
+            {% csrf_token %} 
+            {{file_form.as_p}}
+            <button
+                type="submit"
+                class="px-4 py-2 bg-cyan-400 my-2 hover:bg-cyan-600 rounded-lg text-white"
+            >
+                submit
+            </button>
+        </form>
+    </div>
 </div>
+
+<script src="{% static 'js/leads.js' %}"></script>
 
 {% endblock body %}

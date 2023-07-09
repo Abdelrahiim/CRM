@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 django = "*"
 django-environ = "*"
-mysqlclient = "*"
 nanoid = "*"
 pillow = "*"
 

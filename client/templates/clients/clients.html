@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}
 Clients
 {% endblock title %}
@@ -95,5 +95,7 @@ Clients
 
 <a href="{% url 'client:create' %}"
     class="inline-block text-white  py-4 px-6 hover:bg-orange-300  rounded-xl mx-2 bg-orange-600">Create New Client</a>
+
+<script src="{% static 'js/clients.js' %}"></script>
 
 {% endblock body %}

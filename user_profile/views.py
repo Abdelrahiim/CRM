@@ -8,7 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 from team.models import Team
 from user_profile.models import UserProfileModel
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.db.models import Q
 
 # ---------------------------------------------------------------
 class SignUpView(FormView):
@@ -50,5 +50,6 @@ class MyAccountView(LoginRequiredMixin,View):
     
     # ------------------------------
     def _get_team(self,user):
-        return Team.objects.filter(created_by= user).first()
+        return Team.objects.filter(Q(created_by=user)|Q(members__id = user.id)).first()
+
     
