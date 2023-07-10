@@ -1,12 +1,11 @@
 {% extends 'base.html' %} {% block title %}sign in{% endblock title %} 
 {% block body %}
-<div
-	class="flex flex-col gap-4 justify-center items-center before:content-[''] before:w-full before:h-1 before:bg-stone-500"
->
-    <h2 class = "mt-4 text-2xl"> Login </h2>
-	<form method="POST" action="" class="grid grid-cols-2 place-content-center place-items-center gap-x-0 gap-y-4 ">
+
+    <h2 class = "my-4 text-2xl"> Login </h2>
+
+    <form action="" method="post" class = "flex flex-col gap-4 p-4  hover:drop-shadow  ">
 		{% csrf_token %} 
-        {{form}}
+        {{form.as_p}}
 		<button
 			type="submit"
 			class="px-8 py-2 col-span-full bg-teal-400 rounded-lg text-white"
@@ -14,7 +13,7 @@
 			Log In
 		</button>
 	</form>
-</div>
+
 <script>
 	const element = document.querySelector("#login");
 	element.classList.add("active");

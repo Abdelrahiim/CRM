@@ -4,8 +4,12 @@
 
 {% block body %}
     <div class = "px-6 py-4 ">
-        <h2 class ="text-2xl">{{team.name}}</h2>
-        <p class = "mt-4"><strong> Team Owner :</strong> {{team.created_by}}</p>
+        <h2 class ="text-2xl my-2"> Team {{team.name}}</h2>
+        <p class = "mt-4"><strong> Team Owner :</strong> {{team.created_by}} 
+        {% if team.created_by == request.user %}
+        <a href="{% url 'team:edit' team.id %}" class="text-indigo-400 transition-all duration-500 ease-in-out  hover:text-2xl">Edit Team</a>
+        {% endif %}
+        </p>
         <div><h2  class ="text-2xl"> Team members :</h2> 
             <ul>
                 {% for member in team.members.all %}

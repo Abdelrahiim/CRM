@@ -4,11 +4,11 @@ from django.contrib.auth.models import User
 
 class LoginForm(AuthenticationForm):
     
-    username = forms.CharField(widget=forms.TextInput(attrs={
+    username = forms.CharField(label='',widget=forms.TextInput(attrs={
         'placeholder':"Your Username",
         "class":"w-full px-6 py-4 bg-gray-200 rounded-xl"
     }))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={
+    password = forms.CharField(label='',widget=forms.PasswordInput(attrs={
         'placeholder':"Your Password",
         "class":"w-full px-6 py-4 bg-gray-200 border-2 rounded-xl"
     }))
@@ -19,16 +19,16 @@ class CustomUserCreationForm(UserCreationForm):
         model = User
         fields = ['username','password1','password2']
     
-    username = forms.CharField(widget=forms.TextInput(attrs={
+    username = forms.CharField(label='',widget=forms.TextInput(attrs={
         'placeholder':"Your Username",
         "class":"w-full px-6 py-4 bg-gray-200 rounded-xl"
     }))
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs={
+    password1 = forms.CharField(label='',widget=forms.PasswordInput(attrs={
         'placeholder':"Your Password",
         "class":"w-full px-6 py-4 bg-gray-200 border-2 rounded-xl"
     }))
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={
-        'placeholder':"Your Password",
+    password2 = forms.CharField(label='',widget=forms.PasswordInput(attrs={
+        'placeholder':"Confirm Your Password",
         "class":"w-full px-6 py-4 bg-gray-200 border-2 rounded-xl"
     }))
     

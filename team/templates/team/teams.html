@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Teams
+{% endblock title %}
+
+{% block body %}
+{% if teams %}
+<div class="mx-auto my-6">
+    <table class="w-full  text-s  text-gray-400">
+        <thead class="text-xs  uppercase bg-gray-700 text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    #
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    name
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Plan
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Team Owner
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Controls
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team in teams %}
+            {% if team == active_team %}
+            <tr class="border-b bg-pink-800 border-pink-700 {% cycle 'bg-gray-900' 'bg-gray-800' %}">
+            {% else %}
+            
+            <tr class="border-b bg-gray-800 border-gray-700 {% cycle 'bg-gray-900' 'bg-gray-800' %}">
+            {%endif%}
+                <th scope="row" class="px-6 py-4 font-medium  whitespace-nowrap text-white">
+                    {{ forloop.counter }}
+                </th>
+                <th scope="row" class="px-6 py-4 font-medium text-center whitespace-nowrap text-white">
+                    {{team.name}}
+                </th>
+                <td class="px-6 py-4 text-center">
+                    {{team.plan}}
+                </td>
+                <td class="px-6 py-4 text-center">
+                    {{team.created_by.username}}
+                </td>
+                <td class="px-6 py-4 text-center">
+                    <a href="{% url 'team:details' team.id %}"
+                        class="text-white py-2 px-5 my-5 w-full hover:bg-blue-300  rounded-xl  bg-blue-600"> Inspect</a>
+                    {% comment %} <a href="{% url 'client:remove' client.id %}"
+                        class="text-white py-2 px-6 my-5 w-full hover:bg-red-300  rounded-xl  bg-red-600"> Delete</a>
+                    <a href="{% url 'client:edit' client.id %}"
+                        class="text-white py-2 px-6 my-5 w-full hover:bg-teal-300 rounded-xl  bg-teal-600"> Edit</a> {% endcomment %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+
+<p class="mx-4 text-2xl">There Is No Teams Available</p>
+{% endif %}
+
+
+
+
+
+
+{% comment %} <script src="{% static 'js/clients.js' %}"></script> {% endcomment %}
+
+{% endblock body %}

@@ -3,10 +3,11 @@
 {% block title %} Edit {{team.name}} {% endblock title %}
 
 {% block body %}
-{{team.name}}
-<form action="" method="post">
+<h2 class="text-3xl font-semibold my-2"> Team {{team.name}} </h2>
+
+<form action="" method="post" class = "flex flex-col gap-4 p-4  hover:drop-shadow  ">
     {% csrf_token %}
-    {{form.as_p}}
+    {{form}}
     <button type="submit" class="px-4 py-2 bg-teal-400 rounded-lg text-white">
         submit
     </button>

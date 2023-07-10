@@ -33,7 +33,7 @@ class SignUpView(FormView):
         team = self._get_team()
         user=  form.save()
         team.members.add(user)
-        UserProfileModel.objects.create(user= user)
+        UserProfileModel.objects.create(user= user,active_team=team)
         return user
         
     
@@ -58,6 +58,6 @@ class MyAccountView(LoginRequiredMixin,View):
     
     # ------------------------------
     def _get_team(self,user):
-        return Team.objects.filter(Q(created_by=user)|Q(members__id = user.id)).first()
+        return Team.objects.filter(Q(created_by=user)|Q(members__id = user.id))[0]
 
     

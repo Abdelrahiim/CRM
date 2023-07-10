@@ -5,7 +5,7 @@
 <div class="p-6 my-2 ">
     {% if team.plan.max_client > team.clients_team.count or title == "Edit" %}
     <h1 class="text-2xl my-2 "> {{title}} Client </h1>
-    <form action="" method="post">
+    <form action="" method="post" class = "flex flex-col gap-4 p-4  hover:drop-shadow  ">
         {% csrf_token %}
         {{form.as_p}}
         <button type="submit" class="px-4 py-2 bg-teal-400 rounded-lg text-white">

@@ -20,7 +20,6 @@
     <p>{{lead.modified_at}}</p>
     <p class="mb-2 font-semibold">Team</p>
     <p>{{lead.team}}</p>
-    {{lead.id}}
     <div class="m-4">
         <a
             href="{% url 'leads:edit' lead.id %}"
@@ -48,6 +47,7 @@
         href="{% url 'leads:list'  %}"
         >Back To Leads</a
     >
+    <h1 class="my-3 text-2xl">Comments</h1>
     <div class="space-y-4 flex flex-col gap-6">
         {% for comment in lead.comments_lead.all %}
         <div class="bg-gray-100 p-6 rounded-xl">
@@ -62,14 +62,12 @@
     </div>
 
     <!--Add Comment Form-->
-    <div class="flex flex-col gap-4 justify-center items-center before:content-[''] before:w-full before:h-1  before:bg-stone-500 border-dashed border-4 border-gray-200">
-        <h1 class="text-2xl">Add Comment</h1>
+    
+        <h1 class="my-3 text-2xl">Add Comment</h1>
 
-        <form action="" method="post" class = "flex flex-col justify-center ">
-            {% csrf_token %} 
-            <div class = "flex justify-center items-center gap-4">
-            {{form}}
-            </div>
+        <form action="" method="post" class = "flex flex-col gap-4 p-4  hover:drop-shadow  ">            {% csrf_token %} 
+            {{form.as_p}}
+            
             <button
                 type="submit"
                 class="px-4 py-2 my-2 bg-cyan-400 hover:bg-cyan-600 rounded-lg text-white"
@@ -77,9 +75,11 @@
                 submit
             </button>
         </form>
-    </div>
+    
 
     <!-- Files -->
+    
+    <h1 class="my-3 text-2xl">Files</h1>
     <div class="space-y-4 flex flex-col gap-6">
         {% for file in lead.lead_files.all %}
         <div class="bg-gray-100 p-6 rounded-xl">
@@ -93,11 +93,11 @@
     </div>
 
     <!--Upload File Form-->
-    <div class="flex flex-col gap-4 justify-center items-center my-8 before:content-[''] border-dashed border-4 border-gray-200 before:w-full before:h-1  before:bg-stone-500">
-        <h1 class="text-2xl">Upload File</h1>
-        <form action="{% url "leads:add-file" lead.id %}" method="post" class = "flex flex-col justify-center" enctype="multipart/form-data" >
+        <h1 class="text-2xl my-4">Upload File</h1>
+        
+        <form action="{% url "leads:add-file" lead.id %}" method="post" class = "flex flex-col gap-4 p-4  hover:drop-shadow" enctype="multipart/form-data" >
             {% csrf_token %} 
-            {{file_form.as_p}}
+            {{file_form}}
             <button
                 type="submit"
                 class="px-4 py-2 bg-cyan-400 my-2 hover:bg-cyan-600 rounded-lg text-white"
@@ -105,7 +105,7 @@
                 submit
             </button>
         </form>
-    </div>
+    
 </div>
 
 <script src="{% static 'js/leads.js' %}"></script>

@@ -108,7 +108,7 @@ class SingleLead(LoginRequiredMixin, View):
         
     # ------------------------------
     def _get_team(self, user):
-        return Team.objects.filter(Q(created_by=user)|Q(members__id = user.id)).first()
+        return Team.objects.filter(Q(created_by=user)|Q(members__id = user.id))[0]
 
 
 # --------------------------------------------------------------
@@ -141,7 +141,7 @@ class AddLeadView(LoginRequiredMixin, View):
 
     # ------------------------------
     def _get_team(self, user):
-        return Team.objects.filter(Q(created_by=user)|Q(members__id = user.id)).first()
+        return Team.objects.filter(Q(created_by=user)|Q(members__id = user.id))[0]
 
     # -------------------------------------------
     def get_form(self, **kwargs) -> LeadForm:
@@ -266,7 +266,7 @@ class ConvertToClient(LoginRequiredMixin, View):
         
     # ------------------------------
     def _get_team(self, user):
-        return Team.objects.filter(Q(created_by=user)|Q(members__id = user.id)).first()
+        return Team.objects.filter(Q(created_by=user)|Q(members__id = user.id))[0]
 
 
 

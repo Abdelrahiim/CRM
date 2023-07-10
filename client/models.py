@@ -1,5 +1,5 @@
 from django.db import models
-from CRM.custom_config import get_nano_id ,unique_filename
+from CRM.custom_config import get_nano_id 
 from django.contrib.auth.models import User
 from team.models import Team
 
@@ -36,7 +36,7 @@ class ClientFile(models.Model):
     client = models.ForeignKey(Client,related_name="clients_files",on_delete=models.CASCADE)
     created_by = models.ForeignKey(User,on_delete=models.CASCADE,related_name='clients_files_user')
     created_at = models.DateTimeField(auto_now_add=True)
-    file = models.FileField(blank=True,null=True,upload_to=unique_filename("clients_files"))
+    file = models.FileField(blank=True,null=True,upload_to="clients_files")
     
     
 

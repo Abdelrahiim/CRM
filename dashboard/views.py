@@ -23,7 +23,7 @@ class DashBoard(LoginRequiredMixin,View):
     
     # ------------------------------
     def _get_team(self,user):
-        return Team.objects.filter(created_by=user).first()
+        return Team.objects.filter(created_by=user)[0]
     
     # ------------------------------
     def _get_first_five_leads(self,team):

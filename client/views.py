@@ -101,7 +101,7 @@ class SingleClient(LoginRequiredMixin, View):
         
     # ------------------------------
     def _get_team(self, user):
-        return Team.objects.filter(Q(created_by=user)|Q(members__id = user.id)).first()
+        return Team.objects.filter(Q(created_by=user)|Q(members__id = user.id))[0]
 
 # -------------------------------------------------------------
 class CreateNewClient(LoginRequiredMixin, View):
@@ -132,7 +132,7 @@ class CreateNewClient(LoginRequiredMixin, View):
         
     # ------------------------------
     def _get_team(self,user):
-        return Team.objects.filter(created_by= user).first()
+        return Team.objects.filter(created_by= user)[0]
     
     # -------------------------------------------
     def get_form(self,**kwargs) -> ClientForm:
@@ -238,7 +238,7 @@ class UploadFileView(LoginRequiredMixin,View):
         
     # ------------------------------
     def _get_team(self, user):
-        return Team.objects.filter(Q(created_by=user)|Q(members__id = user.id)).first()
+        return Team.objects.filter(Q(created_by=user)|Q(members__id = user.id))[0]
 
 
 @login_required
