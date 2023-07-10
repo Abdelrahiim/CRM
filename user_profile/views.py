@@ -4,16 +4,16 @@ from django.forms.forms import BaseForm
 from django.shortcuts import render ,redirect
 from django.views import View
 from django.views.generic import FormView
-from django.contrib.auth.forms import UserCreationForm
+from user_profile.forms import CustomUserCreationForm
 from team.models import Team
 from user_profile.models import UserProfileModel
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-
+from django.contrib.auth import authenticate, login
 # ---------------------------------------------------------------
 class SignUpView(FormView):
     template_name = 'user_profile/signup.html'
-    form_class = UserCreationForm
+    form_class = CustomUserCreationForm
     # ------------------------------
     def get(self,request,*args, **kwargs):
         form = self.form_class()
@@ -23,14 +23,22 @@ class SignUpView(FormView):
     def post(self,request,*args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            self._form_handling(form)
-            return redirect('/')
+            user = self._form_handling(form)
+            login(request,user=user)
+            return redirect('dashboard:')
         raise ValidationError("Error Validate The Form")
     
     # ------------------------------
     def _form_handling(self,form):
+        team = self._get_team()
         user=  form.save()
+        team.members.add(user)
         UserProfileModel.objects.create(user= user)
+        return user
+        
+    
+    def _get_team(self):
+        return Team.objects.filter(name="Operations").first()
         
         
 # ---------------------------------------------------------------

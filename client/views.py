@@ -1,11 +1,14 @@
+import csv
 from typing import Any, Dict
 from django.forms import ValidationError
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import ListView
 from client.models import Client
 from client.forms import ClientFileForm, ClientForm, CommentForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from team.models import Team
 from django.db.models import Q
@@ -236,3 +239,22 @@ class UploadFileView(LoginRequiredMixin,View):
     # ------------------------------
     def _get_team(self, user):
         return Team.objects.filter(Q(created_by=user)|Q(members__id = user.id)).first()
+
+
+@login_required
+def client_export(request):
+    """
+    export Clients Data As CSv files
+    """
+    clients = Client.objects.filter(created_by = request.user).all()
+    response = HttpResponse(
+        content_type="text/csv",
+        headers={"Content-Disposition": 'attachment; filename="clients.csv"'},
+    )
+    writer = csv.writer(response)
+    writer.writerow(["CLient", "Email"  ,"Description", "Created at"])
+    
+    for client in clients:
+        writer.writerow([client.name,client.email,client.description,client.created_at])
+
+    return response

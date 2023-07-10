@@ -4,17 +4,21 @@
 {% block title %}Sign Up{% endblock title %}
 
 {% block body %}
-    <h1>Sign Up</h1>
-
-    <form method ='POST' action = ''  >
+<div
+class="flex flex-col gap-4 justify-center items-center before:content-[''] before:w-full before:h-1 before:bg-stone-500"
+>
+<h2 class = "mt-4 text-2xl"> Sign Up </h2>
+<form method="POST" action="" class="grid grid-cols-2 place-content-center place-items-center gap-x-0 gap-y-4 ">
     {% csrf_token %} 
-    
-    {{form.as_p}}
-
-    <button type="submit" class="px-4 py-2 bg-teal-400 rounded-lg text-white">
-        submit
+    {{form}}
+    <button
+        type="submit"
+        class="px-4 py-2 col-span-full bg-teal-400 rounded-lg text-white"
+    >
+        Sign Up
     </button>
-    </form>
+</form>
+</div>
     <script>
         const element = document.querySelector('#signup')
         element.classList.add('active')

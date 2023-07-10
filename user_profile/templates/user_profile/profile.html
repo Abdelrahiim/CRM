@@ -19,7 +19,8 @@
         <p>{{member.username}}</p>
         {% endfor %}
     </div>
-    
+    <a href="{% url 'client:export' %}" class="text-white my-6 py-4 px-6 hover:bg-sky-300  rounded-xl mx-2 bg-sky-600"> Export Client</a>
+
     <a href="{% url 'logout' %}" class="text-white my-6 py-4 px-6 hover:bg-red-300  rounded-xl mx-2 bg-red-600"> Log out</a>
 </div>
 
